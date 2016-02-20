@@ -1,0 +1,124 @@
+@import "../../../stylesheets/mixins.scss";
+@import "../../../stylesheets/variables.scss";
+
+.matrix-app {
+  display: flex;
+
+  &__service {
+    width: 33.7%;
+    padding: 32px;
+    user-select: none;
+    overflow: auto;
+    transition: background-color 300ms ease;
+
+    &_default {
+      background-color: $grayX11;
+    }
+
+    &_edit {
+      background-color: $havelockBlue;
+    }
+
+    &_error {
+      background-color: $babyPink;
+    }
+
+    &__line {
+      margin-bottom: 67px;
+
+      &_main {
+        margin-bottom: 55px;
+      }
+
+      &_checkboxes {
+        margin-bottom: 16px;
+      }
+    }
+
+    &__error {
+      transition: color 300ms ease;
+      color: transparent;
+
+      &_showen {
+        color: #da0902;
+      }
+    }
+
+    &__add-remove {
+      display: flex;
+      align-items: baseline;
+    }
+  }
+
+  &__sandbox {
+    width: 66.3%;
+    padding: 15px 40px;
+    overflow: auto;
+    user-select: none;
+    white-space: nowrap;
+  }
+}
+
+.matrix-named {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-right: 40px;
+  margin-bottom: 40px;
+}
+
+.matrix-name {
+  padding-left: 20px;
+  font-size: 25px;
+}
+
+.matrix-item {
+  padding: 0 8px;
+  border: 2px solid $capeCod;
+
+  &__content {
+    padding: 10px 0;
+    margin-top: -2px;
+    margin-bottom: -2px;
+    background-color: $white;
+
+    &__line {
+      display: flex;
+
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+
+      input {
+        size: 40px;
+        box-shadow: inset 0 1px 0 0 #f2f2f2;
+        border: 1px solid #d9d9d9;
+        border-top-color: #b2b2b2;
+        text-align: center;
+        padding-top: 10px;
+        user-select: all;
+
+        &::placeholder {
+          color: rgba($capeCod, .7);
+        }
+
+        &:focus {
+          box-shadow: 0 0 0 2px $havelockBlue;
+        }
+
+        &[disabled] {
+          background-color: #f2f2f2;
+          border-color: #d9d9d9;
+          box-shadow: none;
+          color: $capeCod;
+        }
+      }
+    }
+
+    &__cell {
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+    }
+  }
+}
