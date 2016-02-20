@@ -1,28 +1,12 @@
-# An Angular Webpack Starter kit
-
-This workflow serves as a starting point for building Angular 1.x applications using WebPack. Should be noted that apart from the pre-installed angular package, this workflow is pretty much generic.
-
-It is a direct port of the amazing [angular workflow](https://github.com/Foxandxss/angular-webpack-workflow) of [Jesús Rodríguez](https://github.com/Foxandxss). All the credits goes for him.
-
-## Features
-
-* Heavily commented webpack configuration with reasonable defaults.
-* ES6, and ES7 support with babel.js.
-* Source maps included in all builds.
-* Development server with live reload.
-* Production builds with cache busting and asset minification.
-* PostCSS and jade support by default.
-* Testing environment using karma to run tests and jasmine as the framework.
-* Code coverage when tests are run.
-* No gulp and no grunt, just npm run-scripts.
+# Online matrix solver
 
 ## Installation
 
 To use it, just clone this repo and install the npm dependencies:
 
 ```shell
-$ git clone https://github.com/zombiQWERTY/angular-webpack-starter my_app
-$ cd my_app
+$ git clone https://github.com/zombiQWERTY/matrixsolver matrixsolver
+$ cd matrixsolver
 $ npm install
 ```
 
