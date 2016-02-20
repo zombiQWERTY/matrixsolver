@@ -70,14 +70,12 @@ export default class HomeController {
       }
     }
 
-    k = i = 0;
     for (k = 1; k <= rowsB; k++) {
       for (i = 1; i <= colsB; i++) {
         B[k][i] = '';
       }
     }
 
-    k = i = 0;
     for (k = 1; k <= rowsC; k++) {
       for (i = 1; i <= colsC; i++) {
         C[k][i] = '';
@@ -169,7 +167,8 @@ export default class HomeController {
             if (matrix.model.hasOwnProperty(matrixLine)) {
               for (let matrixCell in matrix.model[matrixLine]) {
                 if (matrix.model[matrixLine].hasOwnProperty(matrixCell)) {
-                  delete matrix.model[matrixLine][Object.keys(matrix.model[matrixLine])[Object.keys(matrix.model[matrixLine]).length - 1]];
+                  const keys = Object.keys(matrix.model[matrixLine]);
+                  delete matrix.model[matrixLine][keys[keys.length - 1]];
                   break;
                 }
               }
@@ -184,7 +183,8 @@ export default class HomeController {
               if (C.model.hasOwnProperty(matrixLine)) {
                 for (let matrixCell in C.model[matrixLine]) {
                   if (C.model[matrixLine].hasOwnProperty(matrixCell)) {
-                    delete C.model[matrixLine][Object.keys(C.model[matrixLine])[Object.keys(C.model[matrixLine]).length - 1]];
+                    const keys = Object.keys(C.model[matrixLine]);
+                    delete C.model[matrixLine][keys[keys.length - 1]];
                     break;
                   }
                 }
@@ -216,7 +216,7 @@ export default class HomeController {
     };
 
     if (!this.$scope.swapped) {
-      if (colsA !== rowsB) { // If we can multiple matrixes then throw error
+      if (colsA !== rowsB) { // If we can't multiple matrixes then throw error
         return ifError();
       }
 
