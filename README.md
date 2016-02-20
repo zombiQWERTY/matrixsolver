@@ -1,4 +1,8 @@
-# Online matrix solver
+# Online matrix solver (matrixsolve.herokuapp.com)
+
+## How to run
+
+To run it from folder (in this archieve), just start [public/index.html](./public/index.html) by server
 
 ## Installation
 
@@ -26,13 +30,6 @@ All scripts are run with `npm run [script]`, for example: `npm run test`. Maybe 
 
 See what each script does by looking at the `scripts` section in [package.json](./package.json).
 
-## Base app and tutorial
-
-This repo is finally finished boilerplate for your app.
-
-[Content folder](./src/content/) is for your public images (images, that loads from html/jade). The path for `src` 
-attribute will be without parent folder name (`content`).
-
 ## License
 
-The license of this workflow is MIT.
+The license of this application is MIT.
