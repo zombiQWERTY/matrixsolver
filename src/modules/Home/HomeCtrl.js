@@ -48,18 +48,18 @@ export default class HomeController {
     this.$scope.$root.serviceType           = 'default'; // If non-default type set it to default
     this.$scope.$root.service.multiplyError = false; // If has an error, hide it
 
-    const A = this.$scope.$root.matrix.A.model;
-    const B = this.$scope.$root.matrix.B.model;
-    const C = this.$scope.$root.matrix.C.model;
+    const A = this.getModel('A');
+    const B = this.getModel('B');
+    const C = this.getModel('C');
 
-    const rowsA = Object.keys(A).length;
-    const colsA = Object.keys(A[1]).length;
+    const rowsA = HomeController.getRowsLength(A);
+    const colsA = HomeController.getColsLength(A);
 
-    const rowsB = Object.keys(B).length;
-    const colsB = Object.keys(B[1]).length;
+    const rowsB = HomeController.getRowsLength(B);
+    const colsB = HomeController.getColsLength(B);
 
-    const rowsC = Object.keys(C).length;
-    const colsC = Object.keys(C[1]).length;
+    const rowsC = HomeController.getRowsLength(C);
+    const colsC = HomeController.getColsLength(C);
 
     let   k, i; // Set iterators
 
@@ -85,14 +85,14 @@ export default class HomeController {
   }
 
   change(type, line, cell) {
-    const model = this.$scope.$root.matrix[type].model[line][cell];
+    const model = this.getModel(type)[line][cell];
 
     // Our available range for input
     // There is only two checkings because onkeydown finished by now
     if (model < -10) {
-      this.$scope.$root.matrix[type].model[line][cell] = -10;
+      this.getModel(type)[line][cell] = -10;
     } else if (model > 10) {
-      this.$scope.$root.matrix[type].model[line][cell] = 10;
+      this.getModel(type)[line][cell] = 10;
     }
   }
 
@@ -100,39 +100,33 @@ export default class HomeController {
     const that = this;
     return {
       add() {
-        const line    = that.$scope.$root.matrix[that.$scope.$root.matrix.active].line;
-        const resLine = that.$scope.$root.matrix.C.line;
-        if (line.length < that.matrixSize.max) { // Checking if matrix size is good for us
-          line.push(line.length + 1); // Adding line
-          // Update result matrix for future multiplying (follow math matrix multiplying rules)
-          if (that.$scope.$root.matrix.active === 'A') {
-            resLine.push(resLine.length + 1); // Adding line in result matrix
-          }
-        }
+        that.addCellLine('line', 'A');
       },
 
       remove() {
-        const matrix = that.$scope.$root.matrix[that.$scope.$root.matrix.active];
-        const line   = matrix.line;
+        const model = that.getModel(that.getActiveMatrix);
+        const line  = that.getMatrix(that.getActiveMatrix).line;
         if (line.length > that.matrixSize.min) {
           line.pop(); // Removing line
 
-          for (let matrixLine in matrix.model) { // Delete last cell model of each line on line deleting
-            if (matrix.model.hasOwnProperty(matrixLine)) {
-              delete matrix.model[Object.keys(matrix.model)[Object.keys(matrix.model).length - 1]];
+          for (let matrixLine in model) { // Delete last cell model of each line on line deleting
+            if (model.hasOwnProperty(matrixLine)) {
+              const keys = HomeController.getKeys(model);
+              delete model[keys[keys.length - 1]];
               break; // Break loop after deleting
             }
           }
 
 
-          if (that.$scope.$root.matrix.active === 'A') {
-            const C = that.$scope.$root.matrix.C;
-            C.line.pop(); // Removing line in result matrix
+          if (that.getActiveMatrix === 'A') {
+            const CModel = that.getModel('C');
+            that.getMatrix('C').line.pop(); // Removing line in result matrix
 
-            for (let matrixLine in C.model) {
+            for (let matrixLine in CModel) {
               // Delete last cell model of result matrix lines on line deleting
-              if (C.model.hasOwnProperty(matrixLine)) {
-                delete C.model[Object.keys(C.model)[Object.keys(C.model).length - 1]];
+              if (CModel.hasOwnProperty(matrixLine)) {
+                const keys = HomeController.getKeys(CModel);
+                delete CModel[keys[keys.length - 1]];
                 break;
               }
             }
@@ -146,45 +140,37 @@ export default class HomeController {
     const that = this;
     return {
       add() {
-        const matrix = that.$scope.$root.matrix[that.$scope.$root.matrix.active];
-        const cell   = matrix.cell;
-        const resCell = that.$scope.$root.matrix.C.cell;
-        if (cell.length < that.matrixSize.max) {
-          cell.push(cell.length + 1);
-          if (that.$scope.$root.matrix.active === 'B') {
-            resCell.push(resCell.length + 1);
-          }
-        }
+        that.addCellLine('cell', 'B');
       },
 
       remove() {
-        const matrix = that.$scope.$root.matrix[that.$scope.$root.matrix.active];
-        const cell   = matrix.cell;
+        const model = that.getModel(that.getActiveMatrix);
+        const cell  = that.getMatrix(that.getActiveMatrix).cell;
         if (cell.length > that.matrixSize.min) {
           cell.pop();
 
-          for (let matrixLine in matrix.model) {
-            if (matrix.model.hasOwnProperty(matrixLine)) {
-              for (let matrixCell in matrix.model[matrixLine]) {
-                if (matrix.model[matrixLine].hasOwnProperty(matrixCell)) {
-                  const keys = Object.keys(matrix.model[matrixLine]);
-                  delete matrix.model[matrixLine][keys[keys.length - 1]];
+          for (let matrixLine in model) {
+            if (model.hasOwnProperty(matrixLine)) {
+              for (let matrixCell in model[matrixLine]) {
+                if (model[matrixLine].hasOwnProperty(matrixCell)) {
+                  const keys = HomeController.getKeys(model[matrixLine]);
+                  delete model[matrixLine][keys[keys.length - 1]];
                   break;
                 }
               }
             }
           }
 
-          if (that.$scope.$root.matrix.active === 'B') {
-            const C = that.$scope.$root.matrix.C;
-            C.cell.pop();
+          if (that.getActiveMatrix === 'B') {
+            const CModel = that.getModel('C');
+            that.getMatrix('C').cell.pop();
 
-            for (let matrixLine in C.model) {
-              if (C.model.hasOwnProperty(matrixLine)) {
-                for (let matrixCell in C.model[matrixLine]) {
-                  if (C.model[matrixLine].hasOwnProperty(matrixCell)) {
-                    const keys = Object.keys(C.model[matrixLine]);
-                    delete C.model[matrixLine][keys[keys.length - 1]];
+            for (let matrixLine in CModel) {
+              if (CModel.hasOwnProperty(matrixLine)) {
+                for (let matrixCell in CModel[matrixLine]) {
+                  if (CModel[matrixLine].hasOwnProperty(matrixCell)) {
+                    const keys = HomeController.getKeys(CModel[matrixLine]);
+                    delete CModel[matrixLine][keys[keys.length - 1]];
                     break;
                   }
                 }
@@ -196,16 +182,28 @@ export default class HomeController {
     };
   }
 
+  addCellLine(type, whatMatrix) {
+    const lineOrCell = this.getMatrix(this.getActiveMatrix)[type];
+    const res        = this.getMatrix('C')[type];
+    if (lineOrCell.length < this.matrixSize.max) { // Checking if matrix size is good for us
+      lineOrCell.push(lineOrCell.length + 1); // Adding line or cell
+      // Update result matrix for future multiplying (follow math matrix multiplying rules)
+      if (this.getActiveMatrix === whatMatrix) {
+        res.push(res.length + 1); // Adding line or cell into result matrix
+      }
+    }
+  }
+
   multiply() {
-    const A = this.$scope.$root.matrix.A.model;
-    const B = this.$scope.$root.matrix.B.model;
-    const C = this.$scope.$root.matrix.C.model;
+    const A = this.getModel('A');
+    const B = this.getModel('B');
+    const C = this.getModel('C');
 
-    const rowsA = Object.keys(A).length;
-    const colsA = Object.keys(A[1]).length;
+    const rowsA = HomeController.getRowsLength(A);
+    const colsA = HomeController.getColsLength(A);
 
-    const rowsB = Object.keys(B).length;
-    const colsB = Object.keys(B[1]).length;
+    const rowsB = HomeController.getRowsLength(B);
+    const colsB = HomeController.getColsLength(B);
 
     let   k, i, j, res;
 
@@ -241,7 +239,7 @@ export default class HomeController {
           C[i]    = C[i] || {1: 0, 2: 0, 3: 0};
           C[i][k] = C[i][k] || 0;
           res = 0;
-          for (j = 1; j <= rowsB; j++) {
+          for (j = 1; j <= rowsA; j++) {
             res += (B[i][j] || 0) * (A[j][k] || 0);
           }
           C[i][k] = res;
@@ -254,6 +252,30 @@ export default class HomeController {
     const $el = document.getElementsByClassName('matrix-named_to-swap'); // Get changeable matrixes...
     $el[0].parentNode.insertBefore($el[1].parentNode.removeChild($el[1]), $el[0]); // ...and swap it
     this.$scope.swapped = !this.$scope.swapped;
+  }
+
+  getMatrix(matrix = 'A') {
+    return this.$scope.$root.matrix[matrix];
+  }
+
+  get getActiveMatrix() {
+    return this.$scope.$root.matrix.active;
+  }
+
+  getModel(matrix = 'A') {
+    return this.getMatrix(matrix).model;
+  }
+
+  static getRowsLength(matrix = {}) {
+    return HomeController.getKeys(matrix).length;
+  }
+
+  static getColsLength(matrix = {}) {
+    return HomeController.getKeys(matrix[1]).length;
+  }
+
+  static getKeys(object = {}) {
+    return Object.keys(object);
   }
 
   static keyDown(event) {
