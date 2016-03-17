@@ -1,0 +1,53 @@
+.matrix-app__sandbox
+  form
+    .matrix-named.matrix-named_to-swap
+      .matrix-item
+        .matrix-item__content
+          .matrix-item__content__line(ng-repeat="line in Matrix.matrix.A.line")
+            .matrix-item__content__cell(ng-repeat="cell in Matrix.matrix.A.cell")
+              input.matrix-item__input.matrix-item__input_editable(
+                type="text"
+                placeholder="a{{ line }},{{ cell }}"
+                value=""
+                data-type="A"
+                data-line="{{ line }}"
+                data-cell="{{ cell }}"
+                ng-model="Matrix.matrix.A.model[line][cell]"
+                ng-init="Matrix.matrix.A.model[line][cell] = ''"
+                ng-change="Matrix.service.change('A', line, cell)"
+                ng-keydown="Matrix.service.keyDown($event)")
+      .matrix-name A
+
+    .matrix-named.matrix-named_to-swap
+      .matrix-item
+        .matrix-item__content
+          .matrix-item__content__line(ng-repeat="line in Matrix.matrix.B.line")
+            .matrix-item__content__cell(ng-repeat="cell in Matrix.matrix.B.cell")
+              input.matrix-item__input.matrix-item__input_editable(
+                type="text"
+                placeholder="b{{ line }},{{ cell }}"
+                value=""
+                data-type="B"
+                data-line="{{ line }}"
+                data-cell="{{ cell }}"
+                ng-model="Matrix.matrix.B.model[line][cell]"
+                ng-init="Matrix.matrix.B.model[line][cell] = ''"
+                ng-change="Matrix.service.change('B', line, cell)"
+                ng-keydown="Matrix.service.keyDown($event)")
+      .matrix-name B
+
+    div
+
+    .matrix-named
+      .matrix-item
+        .matrix-item__content
+          .matrix-item__content__line(ng-repeat="line in Matrix.matrix.C.line")
+            .matrix-item__content__cell(ng-repeat="cell in Matrix.matrix.C.cell")
+              input.matrix-item__input(
+                type="text"
+                placeholder="c{{ line }},{{ cell }}"
+                value=""
+                ng-model="Matrix.matrix.C.model[line][cell]"
+                ng-init="Matrix.matrix.C.model[line][cell] = ''"
+                disabled="")
+      .matrix-name C

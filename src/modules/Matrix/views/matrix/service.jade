@@ -1,0 +1,42 @@
+.matrix-app__service(class="matrix-app__service_{{ Matrix.serviceType }}")
+  .matrix-app__service__line.matrix-app__service__line_main
+    button.button.button_green(ng-click="Matrix.service.multiply()") Умножить матрицы
+  .matrix-app__service__line
+    button.button.button_default.button_clear(ng-click="Matrix.service.clear()")
+      span 
+      | Очистить матрицы
+    div
+    button.button.button_default.button_replace(ng-click="Matrix.service.swap()")
+      span 
+      | Поменять матрицы местами
+  .matrix-app__service__line.matrix-app__service__line_checkboxes
+    label.checkbox
+      input(type="radio", ng-model="Matrix.matrix.active" value="A")
+      .checkbox__button
+      .checkbox__title Матрица A
+    label.checkbox
+      input(type="radio", ng-model="Matrix.matrix.active" value="B")
+      .checkbox__button
+      .checkbox__title Матрица B
+  .matrix-app__service__line
+    .matrix-app__service__add-remove
+      button.button.button_default.button_add(ng-click="Matrix.service.addLine()")
+        span 
+        | Добавить
+      button.button.button_default.button_remove(ng-click="Matrix.service.removeLine()")
+        span 
+        | Удалить
+      span строку
+    .matrix-app__service__add-remove
+      button.button.button_default.button_add(ng-click="Matrix.service.addCell()")
+        span 
+        | Добавить
+      button.button.button_default.button_remove(ng-click="Matrix.service.removeCell()")
+        span 
+        | Удалить
+      span столбец
+
+  .matrix-app__service__line
+    p.matrix-app__service__error(ng-class="{'matrix-app__service__error_showen': Matrix.service.multiplyError}").
+      Такие матрицы нельзя перемножить,<br /> так как количество столбцов матрицы {{ !swapped ? 'A' : 'B' }}<br /> не
+      равно количеству строк матрицы {{ !swapped ? 'B' : 'A' }}.

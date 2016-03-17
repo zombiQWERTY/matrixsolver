@@ -1,0 +1,32 @@
+@import "../../../stylesheets/mixins.scss";
+@import "../../../stylesheets/variables.scss";
+
+a {
+  text-decoration: none;
+  color: $link-color;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+html, body, .wrapper {
+  min-height: 100vh;
+}
+
+body {
+  background: $body-bg-color;
+  color: $color-base;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  cursor: default;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+}
+
+.wrapper {
+  width: $max-content-width;
+  min-width: $min-content-width;
+  margin: 0 auto;
+}
